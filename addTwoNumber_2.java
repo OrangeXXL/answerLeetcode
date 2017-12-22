@@ -10,11 +10,6 @@
  *     ListNode(int x) { val = x; }
  * }
  */
-class ListNode{
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
 public class addTwoNumber_2 {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode result = new ListNode(0);

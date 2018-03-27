@@ -126,13 +126,102 @@ public class BinaryTree {
     }     //中序遍历非递归操作
 
 
-    public void preOrderTraverse() {}  //前序遍历
-    public void preOrderByStack() {}   //前序遍历非递归操作
-    public void postOrderTraverse() {} //后序遍历
-    public void postOrderByStack() {}  //后序遍历非递归操作
-    public int getMinValue() {
-        return 0;
-    } //得到最小(大)值
+    public void preOrderTraverse() {
+        System.out.println("递归前序遍历");
+        preOrderTraverse(root);
+        System.out.println();
+    }  //前序遍历递归
+
+    public void preOrderTraverse(Node node) {
+        if (node == null)
+            return ;
+
+        node.display();
+        preOrderTraverse(node.leftChild);
+        preOrderTraverse(node.rightChild);
+    }
+
+
+    /**
+     * 前序遍历非递归操作：
+     * 1.对于任意节点current，若不为空则将该节点访问后再将其入栈，并将左子树置为current，重复此操作，直到current为空
+     * 2.若左子树为空，栈顶节点出栈，将该节点的右子树设为current
+     * 3.重复1.2操作直至current为空且栈为空
+     */
+    public void preOrderByStack() {
+        System.out.println("前序遍历非递归");
+        Stack<Node> stack = new Stack<Node>();
+        Node current = root;
+
+        while (current != null || !stack.isEmpty()){
+            while (current != null){
+                current.display();
+                stack.push(current);
+                current = current.leftChild;
+            }
+
+            if (!stack.isEmpty()){
+                current = stack.pop();
+                current = current.rightChild;
+            }
+        }
+
+        System.out.println();
+    }   //前序遍历非递归操作
+
+
+    /**
+     * 递归实现的后续遍历
+     * 1.调用自身遍历左子树
+     * 2.调用自身遍历右子树
+     * 3.访问该节点
+     */
+    public void postOrderTraverse() {
+        System.out.println("后续遍历递归操作");
+        postOrderTraverse(root);
+        System.out.println();
+    } //后序遍历
+    public void postOrderTraverse(Node node) {
+        if (node == null)
+            return ;
+
+        postOrderTraverse(node.leftChild);
+        postOrderTraverse(node.rightChild);
+        node.display();
+    }
+
+    /**
+     * 非递归实现后续遍历：
+     * 1.对于任意节点current，若该节点不为空则将该节点压栈，并将左子树节点设置为current，重复此操作，直到current为空
+     * 2.若左子树为空，则取栈顶节点的右子树，如果右子树为空或右子树刚刚访问过，则访问该节点，并将preNode设置为该节点
+     * 3.重复1、2操作直至栈为空
+     */
+    public void postOrderByStack() {
+        System.out.println("非递归后续遍历实现");
+        Stack<Node> stack = new Stack<Node>();
+        Node current = root;
+        Node preNode = null;
+        while ( current != null || !stack.isEmpty()){
+            while ( current != null){
+                stack.push(current);
+                current = current.leftChild;
+            }
+
+            if (!stack.isEmpty()){
+                current = stack.peek().rightChild;
+                if (current == null || current == preNode){
+                    current = stack.pop();
+                    current.display();
+                    preNode = current;
+                    current = null;
+                }
+            }
+        }
+
+        System.out.println();
+    }  //后序遍历非递归操作
+
+    
     public boolean delete(int value) {
         return false;
     } //删除
